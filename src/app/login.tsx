@@ -44,12 +44,9 @@ export default function Login({ authenticate, setUser }: authenticateType) {
 
     const loginHandler = () => {
         const userDetail = localStorage.getItem(JSON.parse("signObj"));
-        let [userFound] = users.filter(
-            (user) => email === user.email && password === user.password
-        );
-        if (userFound) {
+        if (userDetail?.Email === email && userDetail?.Password === password){
             authenticate(true)
-            setUser(userFound)
+            setUser(userDetail)
         }
     };
 
