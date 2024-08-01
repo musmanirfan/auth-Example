@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { UserType } from "./UserType";
 import { Button, TextField } from "@mui/material";
+import Signup from "./signup";
+import Link from "next/link";
 
 
 // const users: UserType[] = [
@@ -43,7 +45,7 @@ export default function Login({ authenticate, setUser }: authenticateType) {
 
 
     const loginHandler = () => {
-        const userDetail = localStorage.getItem(JSON.parse("signObj"));
+        const userDetail:any = localStorage.getItem(JSON.parse("signObj"));
         if (userDetail?.Email === email && userDetail?.Password === password){
             authenticate(true)
             setUser(userDetail)
@@ -52,12 +54,13 @@ export default function Login({ authenticate, setUser }: authenticateType) {
 
     return (
         <>
-            <form onSubmit={}>
+            <form /* onSubmit={} */>
                 <TextField id="email" label="Email" variant="outlined" value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 <TextField id="password" label="Password" variant="outlined" type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
                 <Button variant="contained" color="success">
                     Login
                 </Button>
+                <p>Sign up your account <Link href={"/signup"}>Sign up</Link></p>
             </form>
         </>
     )
