@@ -43,6 +43,7 @@ export default function Login({ authenticate, setUser }: authenticateType) {
 
 
     const loginHandler = () => {
+        const userDetail = localStorage.getItem(JSON.parse("signObj"));
         let [userFound] = users.filter(
             (user) => email === user.email && password === user.password
         );
@@ -53,14 +54,14 @@ export default function Login({ authenticate, setUser }: authenticateType) {
     };
 
     return (
-        <><div>
-            <TextField id="email" label="Email" variant="outlined" value={email} onChange={(e) => { setEmail(e.target.value) }} />
-            <TextField id="password" label="Password" variant="outlined" type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
-            <Button variant="contained" color="success">
-                Login
-            </Button>
-            <button onClick={loginHandler}>Login</button>
-        </div>
+        <>
+            <form onSubmit={}>
+                <TextField id="email" label="Email" variant="outlined" value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                <TextField id="password" label="Password" variant="outlined" type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
+                <Button variant="contained" color="success">
+                    Login
+                </Button>
+            </form>
         </>
     )
 }
