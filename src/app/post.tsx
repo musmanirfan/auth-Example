@@ -1,20 +1,16 @@
-import { PostType } from "./UserType";
+import { useEffect, useState } from "react"
 
 
-type PostProps = {
-    postt: PostType[];
-}
+export default function Post() {
 
-export default function Post({ postt }: PostProps) {
+    const [getPost, setGetPost] = useState({});
+    useEffect(()=>{
+        setGetPost(JSON.parse(localStorage.getItem("userPosts")))
+    }, [])
     return (
         <>
             <div>
-                {postt.map((post, i) => (
-                    <div key={i}>
-                        <p>{post.content}</p>
-                        <p>Likes: {post.like}</p>
-                    </div>
-                ))}
+
             </div>
         </>
     )
