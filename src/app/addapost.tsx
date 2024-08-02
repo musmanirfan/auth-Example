@@ -4,7 +4,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import { TextareaAutosize, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -34,18 +34,36 @@ export default function AddAPost() {
         console.log(postName, postImageBase64, postDescription, postLikes);
 
         type postObjType = {
-            postName:string;
-            postImage:string | null;
+            postName: string;
+            postImage: string | null;
             postDescription: string;
-            postLikes: number | string ;
+            postLikes: number | string;
         }
+
         const postObj: postObjType = {
             postName,
             postImage: postImageBase64,
             postDescription,
             postLikes
         }
-        localStorage.setItem("userPosts",JSON.stringify(postObj));
+
+        const existingPosts = localStorage.getItem("userPosts")
+        if (existingPosts) {
+            let currentArr = JSON.parse(existingPosts)
+            currentArr?.push(postObj)
+            localStorage.setItem("userPosts", JSON.stringify(currentArr))
+            return
+            // alert("")
+        } else {
+            let tempArr = []
+            tempArr.push(postObj)
+            localStorage.setItem("userPosts", JSON.stringify(tempArr))
+            tempArr = []
+        }
+        // const existingPosts = JSON.parse(localStorage.getItem("userPosts") || "[]");
+        // existingPosts.push(postObj);
+
+        // localStorage.setItem("userPosts", JSON.stringify(existingPosts));
 
     };
 
@@ -86,7 +104,7 @@ export default function AddAPost() {
                         <form onSubmit={addPostFunction}>
                             <TextField id="outlined-basic" label="Post Name" variant="outlined" onChange={e => setPostName(e.target.value)} />
                             <TextField type='file' onChange={handleImageChange} />
-                            <TextareaAutosize minRows={2} minLength={2} placeholder="Post Discription..." className='border border-2' onChange={e => setpostDescription(e.target.value)} />
+                            <TextareaAutosize minRows={2} minLength={2} placeholder="Post Description..." className='border border-2' onChange={e => setpostDescription(e.target.value)} />
                             <TextField type='number' id="outlined-basic" label="Likes" variant="outlined" onChange={e => setPostLikes(e.target.value)} />
                             {/* {postImageBase64 && <img src={postImageBase64} alt="Post Preview" />} */}
                             <Button type='submit' variant="contained">Done</Button>
