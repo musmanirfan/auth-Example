@@ -11,7 +11,8 @@ export default function UserTimeLine({user}:UserTimeLineType){
     console.log(user);
     return(
         <>
-        <Greet userName={user?.userName} />
+        <h1>Hello World</h1>
+        <Greet  />
         <Hobbies hobbies={user?.hobbies} />
         <Post postt={user?.post || []} />
         </>

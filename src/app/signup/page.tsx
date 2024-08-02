@@ -3,8 +3,9 @@
 import { Password } from '@mui/icons-material'
 import { Alert, Button, TextField } from '@mui/material'
 import { Lobster } from 'next/font/google'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { Bounce, toast } from 'react-toastify'
+import { Bounce, toast, ToastContainer } from 'react-toastify'
 
 export default function Signup() {
     const [signName, setsignName] = useState("")
@@ -16,6 +17,8 @@ export default function Signup() {
         Email: string;
         Password: string
     }
+
+    const rout = useRouter();
     const signUpFunc = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const signObj: signObjType = {
@@ -24,9 +27,9 @@ export default function Signup() {
             Password: signpass
         }
         localStorage.setItem("signObj", JSON.stringify(signObj))
-        // setsignName("")
-        // setsignEmail("")
-        // setsignpass("")
+        setsignName("")
+        setsignEmail("")
+        setsignpass("")
         toast.success('😎 User Created Successfully!', {
             position: "top-right",
             autoClose: 5000,
@@ -38,11 +41,12 @@ export default function Signup() {
             theme: "light",
             transition: Bounce,
         });
+        rout.push("/login");
     }
 
     return (
         <>
-        
+            <ToastContainer />
             <form onSubmit={signUpFunc} className='mt-10'>
                 <TextField focused required id="name" label="Name" value={signName} variant="outlined" onChange={(e) => setsignName(e.target.value)} />
                 <TextField required type='email' id="Email" label="Email" value={signEmail} variant="outlined" onChange={(e) => setsignEmail(e.target.value)} />

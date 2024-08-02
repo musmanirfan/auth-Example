@@ -1,5 +1,6 @@
 
 export type PostType = {
+    image: string;
     content : string;
     like: number
 }
