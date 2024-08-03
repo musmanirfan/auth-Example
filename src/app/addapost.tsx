@@ -56,10 +56,17 @@ export default function AddAPost() {
             // alert("")
         } else {
             let tempArr = []
-            tempArr.push(postObj)
+            // tempArr.push(postObj)
             localStorage.setItem("userPosts", JSON.stringify(tempArr))
             tempArr = []
         }
+
+        setPostName("");
+        setPostImage(null);
+        setPostImageBase64(null);
+        setpostDescription("");
+        setPostLikes("");
+        handleClose();
         // const existingPosts = JSON.parse(localStorage.getItem("userPosts") || "[]");
         // existingPosts.push(postObj);
 
@@ -84,7 +91,7 @@ export default function AddAPost() {
 
     return (
         <div>
-            <button onClick={handleOpen} className="border-black border border-solid px-5 py-1">Add a Post</button>
+            <button onClick={handleOpen} className="border-[green] text-white border border-solid px-5 py-1">Add a Post</button>
 
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -103,8 +110,8 @@ export default function AddAPost() {
                     <Box sx={style}>
                         <form onSubmit={addPostFunction}>
                             <TextField id="outlined-basic" label="Post Name" variant="outlined" onChange={e => setPostName(e.target.value)} />
-                            <TextField type='file' onChange={handleImageChange} />
                             <TextareaAutosize minRows={2} minLength={2} placeholder="Post Description..." className='border border-2' onChange={e => setpostDescription(e.target.value)} />
+                            <TextField type='file' onChange={handleImageChange} />
                             <TextField type='number' id="outlined-basic" label="Likes" variant="outlined" onChange={e => setPostLikes(e.target.value)} />
                             {/* {postImageBase64 && <img src={postImageBase64} alt="Post Preview" />} */}
                             <Button type='submit' variant="contained">Done</Button>

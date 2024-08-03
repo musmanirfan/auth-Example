@@ -13,7 +13,6 @@ export default function UserTimeLine({ user }: UserTimeLineType) {
     return (
         <>
             <Header />
-            <AddAPost />
             <Post />
             <Hobbies hobbies={user?.hobbies} />
         </>
