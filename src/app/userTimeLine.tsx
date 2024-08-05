@@ -8,13 +8,12 @@ type UserTimeLineType = {
     user: UserType | null
 }
 
-export default function UserTimeLine({ user }: UserTimeLineType) {
+export default function UserTimeLine() {
 /*     console.log(user); */
     return (
         <>
             <Header />
             <Post />
-            <Hobbies hobbies={user?.hobbies} />
         </>
     )
 }

@@ -56,7 +56,7 @@ export default function AddAPost() {
             // alert("")
         } else {
             let tempArr = []
-            // tempArr.push(postObj)
+            tempArr.push(postObj)
             localStorage.setItem("userPosts", JSON.stringify(tempArr))
             tempArr = []
         }
@@ -85,8 +85,6 @@ export default function AddAPost() {
             };
             reader.readAsDataURL(file);
         }
-
-
     };
 
     return (

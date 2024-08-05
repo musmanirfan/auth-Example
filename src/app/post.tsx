@@ -15,14 +15,26 @@ export default function Post() {
     const [getPost, setGetPost] = useState([]);
 
     useEffect(() => {
-
         const storedPosts = localStorage.getItem("userPosts");
-        console.log(JSON.parse(storedPosts));
-
         if (storedPosts) {
-            setGetPost(JSON.parse(storedPosts))
+            try {
+                const parsedPosts = JSON.parse(storedPosts);
+                if (Array.isArray(parsedPosts)) {
+                    setGetPost(parsedPosts);
+                } else {
+                    console.error("Parsed posts are not an array", parsedPosts);
+                }
+            } catch (error) {
+                console.error("Error parsing stored posts", error);
+            }
         }
-    }, [])
+    }, []);
+
+    const handleDeletePost = (index: number) => {
+        const updatedPosts = getPost.filter((_, i) => i !== index);
+        setGetPost(updatedPosts);
+        localStorage.setItem("userPosts", JSON.stringify(updatedPosts));
+    };
 
     return (
         <>
@@ -39,7 +51,7 @@ export default function Post() {
                                             <p className="text-[10px] mt-[-5px] p-0">last online</p>
                                         </div>
                                     </div>
-                                    <div className="cursor-pointer">{<MoreVert />}</div>
+                                    <div onClick={() => handleDeletePost(i)} className="cursor-pointer">{<MoreVert />}</div>
                                 </div>
                                 <p className="text-[12px]">{post?.postDescription}</p>
                                 {post?.postImage && <img src={post?.postImage} alt="Post Image" />}
