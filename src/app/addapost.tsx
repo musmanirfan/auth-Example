@@ -108,13 +108,13 @@ export default function AddAPost() {
             >
                 <Fade in={open}>
                     <Box sx={style}>
-                        <form onSubmit={addPostFunction}>
-                            <TextField id="outlined-basic" label="Post Name" variant="outlined" onChange={e => setPostName(e.target.value)} />
-                            <TextareaAutosize minRows={2} minLength={2} placeholder="Post Description..." className='border border-2' onChange={e => setpostDescription(e.target.value)} />
-                            <TextField type='file' onChange={handleImageChange} />
-                            <TextField type='number' id="outlined-basic" label="Likes" variant="outlined" onChange={e => setPostLikes(e.target.value)} />
+                        <form className='flex flex-col gap-5' onSubmit={addPostFunction}>
+                            <TextField className='w-[100%]' required id="outlined-basic" label="Post Name" variant="outlined" onChange={e => setPostName(e.target.value)} />
+                            <TextareaAutosize required minRows={2} minLength={2} placeholder="Post Description..." className='border border-2 w-[100%]' onChange={e => setpostDescription(e.target.value)} />
+                            <TextField required type='file' onChange={handleImageChange} />
+                            <TextField className='w-[100%]' required type='number' id="outlined-basic" label="Likes" variant="outlined" onChange={e => setPostLikes(e.target.value)} />
                             {/* {postImageBase64 && <img src={postImageBase64} alt="Post Preview" />} */}
-                            <Button type='submit' variant="contained">Done</Button>
+                            <Button className='w-[100%]' type='submit' variant="contained">Done</Button>
                         </form>
                     </Box>
                 </Fade>
