@@ -45,7 +45,7 @@ export default function Post() {
                                 <Face6 fontSize="large" />
                                 <div>
                                     <p className="font-bold">{post.postName}</p>
-                                    <p className="text-xs mt-[-5px]">first online</p>
+                                    <p className="text-xs mt-[-5px]">Last online</p>
                                 </div>
                             </div>
                             <MoreVert onClick={() => handleDeletePost(i)} className="cursor-pointer" />
