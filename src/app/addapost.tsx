@@ -1,13 +1,8 @@
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import { TextareaAutosize, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { Modal, Fade, Box, Backdrop, Button, TextareaAutosize, TextField } from '@mui/material';
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -18,82 +13,65 @@ const style = {
     p: 4,
 };
 
+type PostType = {
+    postName: string;
+    postImage: string | null;
+    postDescription: string;
+    postLikes: number | "";
+};
+
 export default function AddAPost() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [postName, setPostName] = useState("");
+    const [postImageBase64, setPostImageBase64] = useState<string | null>(null);
+    const [postDescription, setPostDescription] = useState("");
+    const [postLikes, setPostLikes] = useState<number | "">("");
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [postName, setPostName] = useState("");
-    const [postImage, setPostImage] = useState<File | null>(null);
-    const [postImageBase64, setPostImageBase64] = useState<string | null>(null);
-    const [postDescription, setpostDescription] = useState("");
-    const [postLikes, setPostLikes] = useState<number | "">("");
-
     const addPostFunction = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(postName, postImageBase64, postDescription, postLikes);
 
-        type postObjType = {
-            postName: string;
-            postImage: string | null;
-            postDescription: string;
-            postLikes: number | string;
-        }
-
-        const postObj: postObjType = {
+        const postObj: PostType = {
             postName,
             postImage: postImageBase64,
             postDescription,
-            postLikes
-        }
+            postLikes: postLikes === "" ? 0 : Number(postLikes),
+        };
 
-        const existingPosts = localStorage.getItem("userPosts")
-        if (existingPosts) {
-            let currentArr = JSON.parse(existingPosts)
-            currentArr?.push(postObj)
-            localStorage.setItem("userPosts", JSON.stringify(currentArr))
-            return
-            // alert("")
-        } else {
-            let tempArr = []
-            tempArr.push(postObj)
-            localStorage.setItem("userPosts", JSON.stringify(tempArr))
-            tempArr = []
-        }
+        const existingPosts = localStorage.getItem("userPosts");
+        const currentPosts = existingPosts ? JSON.parse(existingPosts) : [];
+        currentPosts.push(postObj);
+        localStorage.setItem("userPosts", JSON.stringify(currentPosts));
 
-        setPostName("");
-        setPostImage(null);
-        setPostImageBase64(null);
-        setpostDescription("");
-        setPostLikes("");
+        resetForm();
         handleClose();
-        // const existingPosts = JSON.parse(localStorage.getItem("userPosts") || "[]");
-        // existingPosts.push(postObj);
+    };
 
-        // localStorage.setItem("userPosts", JSON.stringify(existingPosts));
-
+    const resetForm = () => {
+        setPostName("");
+        setPostImageBase64(null);
+        setPostDescription("");
+        setPostLikes("");
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            setPostImage(file);
-
+        if (e.target.files?.[0]) {
             const reader = new FileReader();
-            reader.onloadend = () => {
-                setPostImageBase64(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            reader.onloadend = () => setPostImageBase64(reader.result as string);
+            reader.readAsDataURL(e.target.files[0]);
         }
     };
 
     return (
         <div>
-            <button onClick={handleOpen} className="border-[green] text-white border border-solid px-5 py-1">Add a Post</button>
+            <button onClick={handleOpen} className="border-[green] text-white border px-5 py-1">
+                Add a Post
+            </button>
 
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
+                aria-labelledby="add-post-modal"
                 open={open}
                 onClose={handleClose}
                 closeAfterTransition
@@ -107,12 +85,37 @@ export default function AddAPost() {
                 <Fade in={open}>
                     <Box sx={style}>
                         <form className='flex flex-col gap-5' onSubmit={addPostFunction}>
-                            <TextField className='w-[100%]' required id="outlined-basic" label="Post Name" variant="outlined" onChange={e => setPostName(e.target.value)} />
-                            <TextareaAutosize required minRows={2} minLength={2} placeholder="Post Description..." className='border border-2 w-[100%]' onChange={e => setpostDescription(e.target.value)} />
-                            <TextField required type='file' onChange={handleImageChange} />
-                            <TextField className='w-[100%]' required type='number' id="outlined-basic" label="Likes" variant="outlined" onChange={e => setPostLikes(e.target.value)} />
-                            {/* {postImageBase64 && <img src={postImageBase64} alt="Post Preview" />} */}
-                            <Button className='w-[100%]' type='submit' variant="contained">Done</Button>
+                            <TextField
+                                required
+                                label="Post Name"
+                                variant="outlined"
+                                value={postName}
+                                onChange={e => setPostName(e.target.value)}
+                            />
+                            <TextareaAutosize
+                                required
+                                minRows={2}
+                                placeholder="Post Description..."
+                                className='border border-2'
+                                value={postDescription}
+                                onChange={e => setPostDescription(e.target.value)}
+                            />
+                            <TextField
+                                required
+                                type='file'
+                                onChange={handleImageChange}
+                            />
+                            <TextField
+                                required
+                                type='number'
+                                label="Likes"
+                                variant="outlined"
+                                value={postLikes}
+                                onChange={e => setPostLikes(e.target.value)}
+                            />
+                            <Button type='submit' variant="contained">
+                                Done
+                            </Button>
                         </form>
                     </Box>
                 </Fade>
@@ -120,3 +123,4 @@ export default function AddAPost() {
         </div>
     );
 }
+
