@@ -12,7 +12,7 @@ type PostType = {
 
 export default function Post() {
 
-    const [getPost, setGetPost] = useState([]);
+    const [getPost, setGetPost] = useState<PostType[]>([]);
 
     useEffect(() => {
         const storedPosts = localStorage.getItem("userPosts");
@@ -20,7 +20,7 @@ export default function Post() {
             try {
                 const parsedPosts = JSON.parse(storedPosts);
                 if (Array.isArray(parsedPosts)) {
-                    setGetPost(parsedPosts);
+                    setGetPost(parsedPosts as PostType[]);
                 } else {
                     console.error("Parsed posts are not an array", parsedPosts);
                 }
